@@ -180,6 +180,10 @@ namespace LinqSnippets
 
             var employeeList = enterprises.SelectMany(enterprise => enterprise.Employees);
 
+            // Obtain all Employees by email
+
+            var employeeEmail = from employee in employeeList select employee.Email;
+
             // Known if any list is empty
 
             bool hasEnterprises = enterprises.Any();
