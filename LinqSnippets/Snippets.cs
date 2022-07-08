@@ -12,12 +12,12 @@ namespace LinqSnippets
             string[] cars =
             {
                 "VW Golf",
-                "VW California",
-                "Audi A3",
+                "VW Vento",
+                "Ford Focus",
                 "Audi A5",
-                "Fiat Punto",
-                "Seat Ibiza",
-                "Seat León"
+                "Fiat Argo",
+                "Toyota Corolla",
+                "Chevrolet Cruze"
             };
 
             // 1. SELECT * of cars (SELECT ALL CARS)
@@ -266,14 +266,133 @@ namespace LinqSnippets
 
         // TODO:
 
+        // Paging with Skip & Take
+
+        static public IEnumerable<T> GetPage<T>(IEnumerable<T> collection, int pageNumber, int resultsPerPage)
+        {
+            int startIndex = (pageNumber - 1) * resultsPerPage;
+            return collection.Skip(startIndex).Take(resultsPerPage);
+        }
+
         // Variables
+
+        static public void LinqVariables()
+        {
+            int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var aboveAverage = from number in numbers
+                               let average = numbers.Average()
+                               let nSquared = Math.Pow(number, 2)
+                               where nSquared > average
+                               select number;
+
+            Console.WriteLine("Average: {0}", numbers.Average());
+
+            foreach(int number in aboveAverage)
+            {
+                Console.WriteLine("Query: Number: {0} Square: {1}", number, Math.Pow(number, 2));
+            }
+
+            // var aboveAverage = from number in first1000 select number; Example: another implementation
+        }
 
         // ZIP
 
-        // Repeat
+        static public void ZipLinq()
+        {
+            int[] numbers = { 1, 2, 3, 4, 6 };
+            string[] stringNumbers = { "one", "two", "three", "four", "five" };
+
+            IEnumerable<string> zipNumbers = numbers.Zip(stringNumbers, (number, word) => number + "=" + word);
+
+            // { "1=one", "2=two", ...... }
+        }
+
+        // Repeat & Range
+
+        static public void repeatRangeLinq()
+        {
+            // Generate a collection of values from 1 to 1000
+
+            IEnumerable<int> first1000 = Enumerable.Range(0, 1000);
+
+            // Repeat a value N times
+            IEnumerable<string> fiveXs = Enumerable.Repeat("X", 5); // { "X","X","X","X","X" }
+        }
+
+        static public void studentsLinq()
+        {
+            var classRoom = new[]
+            {
+                new Student
+                {
+                    Id = 1,
+                    Name = "Ana",
+                    Grade = 90,
+                    Certified = true
+                },
+                new Student
+                {
+                    Id = 2,
+                    Name = "Marcela",
+                    Grade = 90,
+                    Certified = true
+                },
+                new Student
+                {
+                    Id = 3,
+                    Name = "Molly",
+                    Grade = 40,
+                    Certified = true
+                },
+                new Student
+                {
+                    Id = 4,
+                    Name = "Winnie",
+                    Grade = 40,
+                    Certified = false
+                },
+                new Student
+                {
+                    Id = 5,
+                    Name = "Nina",
+                    Grade = 80,
+                    Certified = true
+                },
+                new Student
+                {
+                    Id = 6,
+                    Name = "Minky",
+                    Grade = 60,
+                    Certified = false
+                },
+            };
+
+            var certifiedStudents = from student in classRoom
+                                    where student.Certified
+                                    select student;
+
+            var notCertifiedStudents = from student in classRoom
+                                       where !student.Certified
+                                       select student;
+
+            var approvedStudentsNames = from student in classRoom
+                                        where student.Grade > 50 && student.Certified
+                                        select student.Name;
+        }
 
         // ALL
+        static public void AllLinq()
+        {
+            var numbers = new List<int>() { 1, 2, 3, 4, 5 };
 
+            bool allAreSmallerThan10 = numbers.All(x => x < 10); // true
+            
+            bool allAreBiggerOrEqualThan2 = numbers.All(x => x >= 2); // false
+
+            var emptyList = new List<int>();
+            bool allNumbersAreGreaterThan0 = emptyList.All(x => x >= 0); // true
+        }
         // Agreagate
 
         // Distinct
