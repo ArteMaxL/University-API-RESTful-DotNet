@@ -7,8 +7,6 @@ namespace UniversityApiBackend.Helpers
 {
     public static class JwtHelpers
     {
-
-
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, Guid Id)
         {
             
@@ -32,7 +30,6 @@ namespace UniversityApiBackend.Helpers
 
             return claims;
         }
-
 
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, out Guid Id)
         {
